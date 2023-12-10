@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable, zip } from 'rxjs';
-import { TaskModel } from 'src/app/shared/models/task.model';
+import { TaskModel, UsersModal } from 'src/app/shared/models/task.model';
 
 @Injectable({
   providedIn: 'root',
@@ -27,22 +27,26 @@ export class TasksService {
     });
   }
 
-  createTask(task: TaskModel): Observable<any> {
-    return this.http.post<any>(this.baseURL + 'tasks', task);
+  createTask(task: TaskModel): Observable<TaskModel> {
+    return this.http.post<TaskModel>(this.baseURL + 'tasks', task);
   }
 
-  editTask(Id: number, taskData: TaskModel): Observable<any> {
-    return this.http.put<any>(this.baseURL + 'tasks' + '/' + Id, taskData, {
-      headers: this.headers,
-    });
+  editTask(Id: number, taskData: TaskModel): Observable<TaskModel> {
+    return this.http.put<TaskModel>(
+      this.baseURL + 'tasks' + '/' + Id,
+      taskData,
+      {
+        headers: this.headers,
+      }
+    );
   }
 
-  deleteTask(Id: number): Observable<any> {
-    return this.http.delete<any>(this.baseURL + 'tasks' + '/' + Id);
+  deleteTask(Id: number): Observable<TaskModel> {
+    return this.http.delete<TaskModel>(this.baseURL + 'tasks' + '/' + Id);
   }
 
-  getUsers(): Observable<any[]> {
-    return this.http.get<any[]>(this.baseURL + 'users');
+  getUsers(): Observable<UsersModal[]> {
+    return this.http.get<UsersModal[]>(this.baseURL + 'users');
   }
 
   getTasksWithUsers(text = '') {

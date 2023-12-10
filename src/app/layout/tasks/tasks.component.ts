@@ -1,7 +1,14 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { TasksService } from '../services/tasks.service';
-import { TaskModel, TaskStaus } from 'src/app/shared/models/task.model';
+import { TaskModel } from 'src/app/shared/models/task.model';
+import { TaskStaus } from 'src/app/shared/models/status.enum';
 
 @Component({
   selector: 'app-tasks',
@@ -9,9 +16,17 @@ import { TaskModel, TaskStaus } from 'src/app/shared/models/task.model';
   styleUrls: ['./tasks.component.css'],
 })
 export class TasksComponent implements OnInit {
+  @ViewChild('editTaskModal') public editTaskModal: any;
   todoTasks: TaskModel[] = [];
   inProgressTasks: TaskModel[] = [];
   doneTasks: TaskModel[] = [];
+  editedTask: TaskModel = {
+    userId: 0,
+    desc: '',
+    id: 0,
+    status: TaskStaus.ToDo,
+    users: undefined,
+  };
 
   desc: string = '';
   status: string = '';
@@ -29,8 +44,14 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  openModal(template: TemplateRef<any>) {
+  openModal(template: TemplateRef<HTMLElement>) {
+    this.clearFormInputs();
     this.modalRef = this.modalService.show(template);
+  }
+
+  openEditModal(task: TaskModel) {
+    this.editedTask = task;
+    this.openModal(this.editTaskModal);
   }
 
   getTasks(text = '') {
@@ -57,16 +78,19 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  editTask(task: TaskModel) {
-    if (!task.id) return;
+  editTask() {
+    if (!this.editedTask.id) return;
     let data: TaskModel = {
-      desc: `Some Todo`,
-      status: 0,
-      userId: 1,
+      desc: this.desc,
+      status: +this.status,
+      userId: this.editedTask.userId,
     };
-    this.tasksService.editTask(task.id, data).subscribe((response) => {
-      this.getTasks();
-    });
+    this.tasksService
+      .editTask(this.editedTask.id, data)
+      .subscribe((response) => {
+        this.getTasks();
+        this.modalRef?.hide();
+      });
   }
 
   createTask() {
@@ -77,10 +101,16 @@ export class TasksComponent implements OnInit {
     };
     this.tasksService.createTask(task).subscribe((response) => {
       this.getTasks();
+      this.modalRef?.hide();
     });
   }
 
   getRandomNumber(): number {
     return Math.floor(Math.random() * 5) + 1;
+  }
+
+  clearFormInputs() {
+    this.desc = '';
+    this.status = '';
   }
 }

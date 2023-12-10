@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 @NgModule({
   declarations: [],
-  imports: [PaginationModule.forRoot(), ModalModule.forRoot()],
-  exports: [PaginationModule, ModalModule],
+  imports: [ModalModule.forRoot()],
+  exports: [ModalModule],
 })
 export class BootstrapModule {}

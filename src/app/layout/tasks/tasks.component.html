@@ -33,7 +33,7 @@
           <div *ngFor="let task of todoTasks" class="card my-3">
             <app-task-card
               [task]="task"
-              (edit_task)="editTask(task)"
+              (edit_task)="openEditModal(task)"
               (delete_task)="deleteTask(task)"
             ></app-task-card>
           </div>
@@ -52,7 +52,7 @@
           <div *ngFor="let task of inProgressTasks" class="card my-3">
             <app-task-card
               [task]="task"
-              (edit_task)="editTask(task)"
+              (edit_task)="openEditModal(task)"
               (delete_task)="deleteTask(task)"
             ></app-task-card>
           </div>
@@ -71,7 +71,7 @@
           <div *ngFor="let task of doneTasks" class="card my-3">
             <app-task-card
               [task]="task"
-              (edit_task)="editTask(task)"
+              (edit_task)="openEditModal(task)"
               (delete_task)="deleteTask(task)"
             ></app-task-card>
           </div>
@@ -83,7 +83,7 @@
 
 <ng-template #addTaskModal>
   <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">New Task</h5>
+    <h5 class="modal-title" id="exampleModalLabel">Add New Task</h5>
     <button type="button" class="btn-close" (click)="modalRef?.hide()"></button>
   </div>
   <div class="modal-body">
@@ -110,6 +110,44 @@
       <div class="modal-footer">
         <button class="btn btn-primary px-3" [disabled]="!taskForm.form.valid">
           Add new task
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #editTaskModal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Edit Task</h5>
+    <button type="button" class="btn-close" (click)="modalRef?.hide()"></button>
+  </div>
+  <div class="modal-body">
+    <form #editTaskForm="ngForm" (ngSubmit)="editTask()">
+      <div class="mb-3">
+        <label for="desc-name" class="col-form-label">Description:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="desc-name"
+          required
+          [(ngModel)]="desc"
+          name="desc"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="status-name" class="col-form-label">Status:</label>
+        <select class="form-select" required [(ngModel)]="status" name="status">
+          <option value="0">ToDo</option>
+          <option value="1">InProgress</option>
+          <option value="2">Done</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button
+          class="btn btn-primary px-3"
+          [disabled]="!editTaskForm.form.valid"
+        >
+          Edit task
         </button>
       </div>
     </form>
