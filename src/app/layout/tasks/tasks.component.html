@@ -1,0 +1,121 @@
+<header class="d-flex justify-content-between mt-5 mb-3">
+  <span class="fs-4">Tasks</span>
+  <div
+    class="d-flex justify-content-between align-items-center pointer"
+    style="min-width: 280px"
+  >
+    <i class="bi bi-arrow-90deg-left"></i>
+    <i class="bi bi-arrow-90deg-right"></i>
+    <i class="bi bi-people"></i>
+    <i class="bi bi-sliders"></i>
+    <div>
+      <!-----------------button Modal ------------------->
+      <button
+        type="button"
+        class="d-inline btn btn-sm btn-primary px-3"
+        (click)="openModal(addTaskModal)"
+      >
+        New Task
+        <i class="bi bi-plus-lg mx-2"></i>
+      </button>
+    </div>
+  </div>
+</header>
+<section class="row g-3">
+  <section class="col-12 col-lg-6 col-xl-4">
+    <div class="card text-bg-primary">
+      <div class="card-body">
+        <p class="fw-bold">
+          <i class="bi bi-app me-3"></i>
+          <span>To Do</span>
+        </p>
+        <ng-container *ngIf="todoTasks.length; else noTasks">
+          <div *ngFor="let task of todoTasks" class="card my-3">
+            <app-task-card
+              [task]="task"
+              (edit_task)="editTask(task)"
+              (delete_task)="deleteTask(task)"
+            ></app-task-card>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </section>
+  <section class="col-12 col-lg-6 col-xl-4">
+    <div class="card text-bg-warning">
+      <div class="card-body">
+        <p class="fw-bold">
+          <i class="bi bi-hourglass-split me-3"></i>
+          <span>In Progress</span>
+        </p>
+        <ng-container *ngIf="inProgressTasks.length; else noTasks">
+          <div *ngFor="let task of inProgressTasks" class="card my-3">
+            <app-task-card
+              [task]="task"
+              (edit_task)="editTask(task)"
+              (delete_task)="deleteTask(task)"
+            ></app-task-card>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </section>
+  <section class="col-12 col-lg-6 col-xl-4">
+    <div class="card text-bg-danger">
+      <div class="card-body">
+        <p class="fw-bold">
+          <i class="bi bi-check-square me-3"></i>
+          <span>Done</span>
+        </p>
+        <ng-container *ngIf="doneTasks.length; else noTasks">
+          <div *ngFor="let task of doneTasks" class="card my-3">
+            <app-task-card
+              [task]="task"
+              (edit_task)="editTask(task)"
+              (delete_task)="deleteTask(task)"
+            ></app-task-card>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </section>
+</section>
+
+<ng-template #addTaskModal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">New Task</h5>
+    <button type="button" class="btn-close" (click)="modalRef?.hide()"></button>
+  </div>
+  <div class="modal-body">
+    <form #taskForm="ngForm" (ngSubmit)="createTask()">
+      <div class="mb-3">
+        <label for="desc-name" class="col-form-label">Description:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="desc-name"
+          required
+          [(ngModel)]="desc"
+          name="desc"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="status-name" class="col-form-label">Status:</label>
+        <select class="form-select" required [(ngModel)]="status" name="status">
+          <option value="0">ToDo</option>
+          <option value="1">InProgress</option>
+          <option value="2">Done</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary px-3" [disabled]="!taskForm.form.valid">
+          Add new task
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #noTasks>
+  <p class="fw-bold text-muted text-center my-3">No tasks in the list.</p>
+</ng-template>

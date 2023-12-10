@@ -1,0 +1,24 @@
+<header class="row w-100 my-3">
+  <div class="col-8 mb-3 position-relative">
+    <input
+      type="search"
+      class="form-control pe-5"
+      placeholder="search..."
+      (input)="search($event)"
+    />
+    <i
+      class="bi bi-search position-absolute top-50 end-0 translate-middle text-muted pe-2"
+    ></i>
+  </div>
+
+  <div class="col-4 text-end">
+    <i class="bi bi-bell mx-3"></i>
+    <img
+      width="35px"
+      height="35px"
+      class="rounded-circle"
+      src="assets/images/profile.png"
+      alt="profile"
+    />
+  </div>
+</header>

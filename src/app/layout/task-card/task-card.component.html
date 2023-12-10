@@ -1,0 +1,12 @@
+<div class="card-body">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <img [src]="task?.user?.image" width="40px" height="40px" alt="" />
+    <div>
+      <i class="bi bi-pencil mx-2 pointer" (click)="edit_task.emit()"></i>
+      <i class="bi bi-trash3 mx-2 pointer" (click)="delete_task.emit()"></i>
+    </div>
+  </div>
+  <p>
+    {{ task.desc }}
+  </p>
+</div>
