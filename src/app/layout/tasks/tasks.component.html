@@ -130,13 +130,13 @@
           class="form-control"
           id="desc-name"
           required
-          [(ngModel)]="desc"
+          [(ngModel)]="editedTask.desc"
           name="desc"
         />
       </div>
       <div class="mb-3">
         <label for="status-name" class="col-form-label">Status:</label>
-        <select class="form-select" required [(ngModel)]="status" name="status">
+        <select class="form-select" required [(ngModel)]="editedTask.status" name="status">
           <option value="0">ToDo</option>
           <option value="1">InProgress</option>
           <option value="2">Done</option>

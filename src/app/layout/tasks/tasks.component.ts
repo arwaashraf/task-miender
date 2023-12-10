@@ -16,7 +16,8 @@ import { TaskStaus } from 'src/app/shared/models/status.enum';
   styleUrls: ['./tasks.component.css'],
 })
 export class TasksComponent implements OnInit {
-  @ViewChild('editTaskModal') public editTaskModal: any;
+  @ViewChild('editTaskModal') editTaskModal!: TemplateRef<any>;
+
   todoTasks: TaskModel[] = [];
   inProgressTasks: TaskModel[] = [];
   doneTasks: TaskModel[] = [];
@@ -81,8 +82,8 @@ export class TasksComponent implements OnInit {
   editTask() {
     if (!this.editedTask.id) return;
     let data: TaskModel = {
-      desc: this.desc,
-      status: +this.status,
+      desc: this.editedTask.desc,
+      status: +this.editedTask.status,
       userId: this.editedTask.userId,
     };
     this.tasksService
@@ -99,6 +100,7 @@ export class TasksComponent implements OnInit {
       desc: this.desc,
       status: +this.status,
     };
+    if (!task.desc || !task.status) return;
     this.tasksService.createTask(task).subscribe((response) => {
       this.getTasks();
       this.modalRef?.hide();
