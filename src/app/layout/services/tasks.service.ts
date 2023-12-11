@@ -1,6 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, zip } from 'rxjs';
+import {
+  BehaviorSubject,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  Observable,
+  zip,
+} from 'rxjs';
 import { TaskModel, UsersModal } from 'src/app/shared/models/task.model';
 
 @Injectable({
@@ -12,7 +19,11 @@ export class TasksService {
   searchText = new BehaviorSubject<string>('');
 
   getSearchText(): Observable<string> {
-    return this.searchText.asObservable();
+    return this.searchText.asObservable().pipe(
+      map((text: string) => text.trim()),
+      debounceTime(1000),
+      distinctUntilChanged()
+    );
   }
 
   setSearchText(value: string) {
