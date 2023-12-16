@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
@@ -17,7 +18,13 @@ export class SideNavComponent implements OnInit {
 
   loggingout = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    public translate: TranslateService
+  ) {
+    translate.use('en');
+  }
 
   ngOnInit(): void {}
 
@@ -26,5 +33,9 @@ export class SideNavComponent implements OnInit {
     this.authService.logout().subscribe((res) => {
       this.router.navigate(['auth']);
     });
+  }
+
+  changeLanguage(currentLang: string) {
+    currentLang === 'en' ? this.translate.use('ar') : this.translate.use('en');
   }
 }
